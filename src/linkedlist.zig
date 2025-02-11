@@ -12,7 +12,7 @@ pub const LinkedList = struct {
         data: i32,
     };
 
-    pub fn new(allocator: Allocator) LinkedList {
+    pub fn init(allocator: Allocator) LinkedList {
         return LinkedList{
             .head = null,
             .tail = null,
@@ -21,7 +21,7 @@ pub const LinkedList = struct {
         };
     }
 
-    pub fn free(self: *LinkedList) void {
+    pub fn deinit(self: *LinkedList) void {
         var current = self.head;
         while (current) |node| {
             current = node.next;

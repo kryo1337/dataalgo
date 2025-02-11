@@ -7,12 +7,32 @@ const time = std.time;
 
 const Stack = @import("stack.zig").Stack;
 const Trie = @import("trie.zig");
-// const LinkedList = @import("linkedlist.zig").LinkedList;
+const LinkedList = @import("linkedlist.zig").LinkedList;
 
 pub fn main() !void {
     var gpa = heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
+
+    // LinkedList
+    print("\n\nLinkedList: \n", .{});
+    var list = LinkedList.init(allocator);
+    defer list.deinit();
+
+    try list.append(10);
+    try list.append(5);
+    try list.append(7);
+    try list.append(1);
+    try list.append(8);
+
+    _ = list.remove(10);
+    _ = list.remove(7);
+    _ = list.remove(8);
+
+    var items = try list.toOwnedSlice();
+    _ = &items;
+    defer allocator.free(items);
+    print("{any}\n", .{items});
 
     // Stack
     print("\n\nStack: \n", .{});
