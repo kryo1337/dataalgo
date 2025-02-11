@@ -5,9 +5,10 @@ const mem = std.mem;
 const print = std.debug.print;
 const time = std.time;
 
+const LinkedList = @import("linkedlist.zig").LinkedList;
 const Stack = @import("stack.zig").Stack;
 const Trie = @import("trie.zig");
-const LinkedList = @import("linkedlist.zig").LinkedList;
+const Tree = @import("tree.zig").Tree;
 
 pub fn main() !void {
     var gpa = heap.GeneralPurposeAllocator(.{}){};
@@ -99,4 +100,29 @@ pub fn main() !void {
         found,
         fmt.fmtDuration(timer.lap()),
     });
+
+    //Tree
+    print("\n\nTree:\n", .{});
+    const stdout = std.io.getStdOut().writer();
+    var tree = try Tree(i32).init(allocator, 10);
+    defer tree.deinit();
+
+    _ = try tree.insert(5);
+    _ = try tree.insert(15);
+    _ = try tree.insert(3);
+    _ = try tree.insert(7);
+    _ = try tree.insert(12);
+    _ = try tree.insert(17);
+
+    try tree.format("", std.fmt.FormatOptions{}, stdout);
+
+    if (tree.find(7)) |node| {
+        try stdout.print("Found node with value: {d}\n", .{node.value});
+    } else {
+        try stdout.print("Value 7 not found.\n", .{});
+    }
+
+    try tree.remove(10);
+    try stdout.print("\nAfter removing 10:\n", .{});
+    try tree.format("", std.fmt.FormatOptions{}, stdout);
 }

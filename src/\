@@ -1,0 +1,26 @@
+const std = @import("std");
+const Allocator = std.mem.Allocator;
+
+pub fn Tree(comptime T: type) type {
+    return struct {
+        root: Node,
+
+        const Self = @This();
+
+        pub const Node = struct {
+            value: T,
+            parent: ?*Node,
+            left: ?*Node,
+            right: ?*Node,
+
+            fn init(value: T) Node {
+                return Node{
+                    .value = value,
+                    .parent = null,
+                    .left = null,
+                    .right = null,
+                };
+            }
+        };
+    };
+}
