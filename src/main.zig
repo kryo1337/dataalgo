@@ -9,6 +9,11 @@ const LinkedList = @import("linkedlist.zig").LinkedList;
 const Stack = @import("stack.zig").Stack;
 const Trie = @import("trie.zig");
 const Tree = @import("tree.zig").Tree;
+const Heap = @import("heap.zig").Heap;
+
+fn comparator(a: i32, b: i32) bool {
+    return a < b;
+}
 
 pub fn main() !void {
     var gpa = heap.GeneralPurposeAllocator(.{}){};
@@ -125,4 +130,26 @@ pub fn main() !void {
     try tree.remove(10);
     try stdout.print("\nAfter removing 10:\n", .{});
     try tree.format("", std.fmt.FormatOptions{}, stdout);
+
+    //Heap
+    print("\n\nHeap:\n", .{});
+    const int_heap = Heap(i32);
+
+    var heaps = try int_heap.init(allocator, 10, &comparator);
+    defer heaps.deinit();
+
+    try heaps.push(5);
+    try heaps.push(3);
+    try heaps.push(8);
+    try heaps.push(1);
+    try heaps.push(4);
+
+    const min_val = try heaps.peek();
+    print("min_val: {}\n", .{min_val});
+
+    print("poppin:\n", .{});
+    while (heaps.len > 0) {
+        const value = try heaps.pop();
+        print("{}\n", .{value});
+    }
 }
