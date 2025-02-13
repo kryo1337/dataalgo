@@ -10,6 +10,7 @@ const Stack = @import("stack.zig").Stack;
 const Trie = @import("trie.zig");
 const Tree = @import("tree.zig").Tree;
 const Heap = @import("heap.zig").Heap;
+const HashTable = @import("hashtable.zig").HashTable;
 
 fn comparator(a: i32, b: i32) bool {
     return a < b;
@@ -151,5 +152,37 @@ pub fn main() !void {
     while (heaps.len > 0) {
         const value = try heaps.pop();
         print("{}\n", .{value});
+    }
+
+    //Hash Table
+    print("\n\nHash Table:\n", .{});
+
+    var ht = try HashTable.init(allocator, 16);
+    defer ht.deinit();
+
+    try ht.insert("siema", "hello");
+    try ht.insert("spier", "nara");
+
+    if (ht.get("siema")) |val| {
+        print("found key: siema, value: {s}\n", .{val});
+    } else {
+        print("not found key: siema\n", .{});
+    }
+
+    try ht.insert("siema", "elo");
+    if (ht.get("siema")) |val| {
+        print("updated key: siema: {s}\n", .{val});
+    }
+
+    if (ht.delete("spier")) {
+        print("deleted key: spier\n", .{});
+    } else {
+        print("key: spier, not found\n", .{});
+    }
+
+    if (ht.get("spier") == null) {
+        print("key: spier, isnt in table\n", .{});
+    } else {
+        print("key: spier, is in table\n", .{});
     }
 }
