@@ -34,11 +34,13 @@ fn intLess(a: i32, b: i32) bool {
 }
 
 pub fn main() !void {
-    var data = [_]i32{ 15, 3, 9, 8, 5, 2, 7, 1, 6 };
+    var data = [_]i32{ 10, 5, 2, 7, 4, 9, 12, 1, 8, 6, 11, 3 };
     const slice = data[0..];
     std.debug.print("Before sort: {any}\n", .{slice});
 
+    var timer = try std.time.Timer.start();
     quickSort(i32, slice, intLess);
 
     std.debug.print("After sort: {any}\n", .{slice});
+    std.debug.print("Elapsed time: {} ms\n", .{timer.lap()});
 }
